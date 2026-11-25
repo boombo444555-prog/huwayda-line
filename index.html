@@ -94,7 +94,7 @@ $("filters").addEventListener("click",e=>{const b=e.target.closest("button[data-
 $("order").addEventListener("submit",e=>{e.preventDefault();if(!cart.length){toast("أضيفي قطعة للسلة أولاً 🛍️");return}const f=new FormData(e.target),lines=cart.map(x=>(x.code||"")+" "+x.name+" — "+x.price+"₪").join("\n"),msg="طلب جديد من Huwayda Line\nالاسم: "+f.get("name")+"\nالهاتف: "+f.get("phone")+"\nرقم بديل: "+(f.get("alt")||"—")+"\nالعنوان: "+f.get("address")+"\nالقطع:\n"+lines+"\nالمجموع: "+cart.reduce((a,x)=>a+Number(x.price),0)+"₪";window.open("https://wa.me/972546082009?text="+encodeURIComponent(msg),"_blank")});
 const root=document.documentElement;let theme=localStorage.getItem("huwayda-theme")||"light";root.dataset.theme=theme;$("themeToggle").textContent=theme==="dark"?"☀":"☾";$("themeToggle").addEventListener("click",()=>{theme=theme==="dark"?"light":"dark";root.dataset.theme=theme;localStorage.setItem("huwayda-theme",theme);$("themeToggle").textContent=theme==="dark"?"☀":"☾"});
 let chosenCat=localStorage.getItem("huwayda-cat")||"🐱";function setCat(cat){chosenCat=cat;$("companionBtn").textContent=cat;$("heroCat").textContent=cat;localStorage.setItem("huwayda-cat",cat);document.querySelectorAll("#catOptions button").forEach(b=>b.classList.toggle("selected",b.dataset.cat===cat))}
-setCat(chosenCat);$("companionBtn").addEventListener("click",()=>$("catMenu").classList.toggle("open"));$("catOptions").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;setCat(b.dataset.cat);$("catMenu").classList.remove("open");toast("القطة الجديدة صارت رفيقتك 🐾")});
+setCat(chosenCat);$("companionBtn").addEventListener("click",()=>{});$("catOptions").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;setCat(b.dataset.cat);$("catMenu").classList.remove("open");toast("القطة الجديدة صارت رفيقتك 🐾")});
 $("menuToggle").addEventListener("click",()=>$("navlinks").classList.toggle("open"));$("navlinks").addEventListener("click",e=>{if(e.target.tagName==="A")$("navlinks").classList.remove("open")});
 $("year").textContent=new Date().getFullYear();const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}}),{threshold:.12});document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));drawCart();loadProducts();
 </script>
@@ -207,7 +207,7 @@ function translateTextNode(node,lang){
  const raw=originals.get(node)??node.nodeValue;
  if(!originals.has(node))originals.set(node,raw);
  const key=raw.trim();if(!key)return;
- const val=dictionaries[lang]?.[key];if(val)node.nodeValue=raw.replace(key,val);
+ const val=dictionaries[lang]?.[key];if(val){const next=raw.replace(key,val);if(node.nodeValue!==next)node.nodeValue=next;}
 }
 function translatePage(lang){
  document.documentElement.lang=lang;document.documentElement.dir=lang==="en"?"ltr":"rtl";
@@ -239,7 +239,7 @@ translatePage(lang);
 (function(){
 const cat=document.getElementById("companionBtn"),bubble=document.getElementById("catBubble"),menu=document.getElementById("catMenu");
 if(!cat||!bubble||!menu)return;
-let sleepTimer;
+let sleepTimer,idleTimer;
 const phrases={
 ar:{pet:"يا سلام! بحب الدلع 😻",play:"ييي! يلا نلعب! 🎾",food:"مممم… زاكية! 🍓",sleep:"تصبحي على خير… Zzz 😴",hello:"أنا هون! اكبسيني عشان نلعب سوا 🐾"},
 en:{pet:"That feels lovely! 😻",play:"Yay! Let's play! 🎾",food:"Yum… delicious! 🍓",sleep:"Good night… Zzz 😴",hello:"I'm here! Tap me and let's play 🐾"},
@@ -247,16 +247,19 @@ he:{pet:"איזה כיף! אני אוהבת ליטופים 😻",play:"יש! ב�
 };
 function say(key){bubble.textContent=phrases[key][window.huwaydaLanguage?.()||"ar"]}
 function act(action){
-cat.classList.remove("petted","playing","eating","napping");void cat.offsetWidth;
+clearTimeout(idleTimer);cat.classList.remove("petted","playing","eating","napping");void cat.offsetWidth;
 if(action==="pet")cat.classList.add("petted");
 if(action==="play")cat.classList.add("playing");
 if(action==="food")cat.classList.add("eating");
 if(action==="sleep")cat.classList.add("napping");
 say(action);clearTimeout(sleepTimer);if(action!=="sleep")sleepTimer=setTimeout(()=>{cat.classList.remove("petted","playing","eating");say("hello")},2600);
 }
-cat.addEventListener("click",()=>{menu.classList.toggle("open");cat.classList.remove("napping");say("hello")});
+cat.addEventListener("click",()=>{cat.classList.remove("napping");say("hello")});
 menu.querySelectorAll("[data-cat-action]").forEach(b=>b.addEventListener("click",()=>act(b.dataset.catAction)));
 cat.addEventListener("mouseenter",()=>{if(!menu.classList.contains("open"))say("hello")});
+function idle(){if(menu.classList.contains("open")){idleTimer=setTimeout(idle,5000);return}cat.classList.remove("grooming","stretching","sleeping");void cat.offsetWidth;const moods=["grooming","stretching","sleeping"];const mood=moods[Math.floor(Math.random()*moods.length)];cat.classList.add(mood);idleTimer=setTimeout(idle,6500)}
+["pointerdown","touchstart","keydown","scroll"].forEach(evt=>window.addEventListener(evt,()=>{clearTimeout(idleTimer);cat.classList.remove("grooming","stretching","sleeping");idleTimer=setTimeout(idle,6500)},{passive:true}));
+idleTimer=setTimeout(idle,6500);
 })();
 </script>
 
