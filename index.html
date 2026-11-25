@@ -24,6 +24,9 @@
 @media(max-width:950px){.products{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{min-height:550px}.hero-art{height:360px}.showcase{height:315px}.navlinks{gap:14px}}
 @media(max-width:700px){.nav{padding:10px 15px}.navlinks{display:none;position:absolute;top:68px;right:12px;left:12px;padding:18px;background:var(--surface-solid);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch}.navlinks.open{display:flex}.navlinks a{padding:8px}.menu-toggle{display:grid}.hero{grid-template-columns:1fr;padding:58px 22px 48px;gap:10px;text-align:center}.hero-copy{margin:auto}.hero-copy p{margin-inline:auto}.hero-buttons,.hero-note{justify-content:center}.hero-art{height:300px}.showcase{height:270px;width:230px}.showcase-cat{font-size:150px}.orbit{width:275px}.float-one{right:3%}.float-two{left:3%}.section{padding:62px 17px}.section-head{align-items:start;flex-direction:column}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.photo{height:190px}.info{padding:12px}.info h3{font-size:14px}.price{font-size:16px}.promo-inner{align-items:flex-start;flex-direction:column}.cart-panel{grid-template-columns:1fr}.contact{grid-template-columns:1fr}.companion{left:12px;bottom:12px}.companion-bubble{display:none}.companion-btn{width:55px;height:55px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 @media(max-width:380px){.products{grid-template-columns:1fr 1fr}.photo{height:160px}.brand strong{font-size:14px}.brandmark{width:38px;height:38px}}
+
+.shop-tools{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:-7px 0 22px;flex-wrap:wrap}.searchbox{flex:1;min-width:210px}.searchbox input,.sortbox{height:44px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:0 15px;outline:none;font-size:12px}.searchbox input{width:100%}.searchbox input:focus,.sortbox:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}.sortbox{min-width:155px}.results-count{font-size:11px;color:var(--muted);white-space:nowrap}.product-actions{display:flex;align-items:center;gap:7px}.detail-link{border:1px solid var(--line);background:transparent;color:var(--accent);border-radius:10px;padding:7px 10px;font-size:10px;font-weight:800}.detail-modal{position:fixed;inset:0;z-index:60;background:rgba(18,12,25,.68);backdrop-filter:blur(9px);display:none;place-items:center;padding:18px}.detail-modal.open{display:grid}.detail-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:var(--surface-solid);border:1px solid var(--line);border-radius:25px;box-shadow:0 30px 100px rgba(0,0,0,.3);display:grid;grid-template-columns:1fr 1fr;position:relative}.detail-image{min-height:390px;background:linear-gradient(145deg,var(--hero1),var(--hero2));display:grid;place-items:center;overflow:hidden;border-radius:0 25px 25px 0}.detail-image img{width:100%;height:100%;max-height:500px;object-fit:cover}.detail-copy{padding:34px 27px}.detail-copy h3{font-size:25px;margin:8px 0}.detail-copy p{font-size:13px;line-height:2;color:var(--muted)}.detail-meta{padding:12px 0;border-block:1px solid var(--line);font-size:12px;line-height:2}.detail-close{position:absolute;top:12px;left:12px;width:37px;height:37px;border:0;border-radius:12px;background:var(--surface-solid);color:var(--ink);font-size:20px;z-index:2}.detail-price{font-size:25px;color:var(--accent);font-weight:900;margin:18px 0}.detail-add{width:100%}.shop-empty{grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:20px}
+@media(max-width:700px){.shop-tools{align-items:stretch}.searchbox{min-width:100%}.sortbox{flex:1}.detail-card{grid-template-columns:1fr}.detail-image{min-height:240px;max-height:290px;border-radius:0}.detail-copy{padding:22px}.detail-copy h3{font-size:21px}}
 </style>
 </head>
 <body>
@@ -41,6 +44,7 @@
 <main>
 <section class="section" id="shop"><div class="section-head reveal"><div><div class="kicker">THE COLLECTION</div><h2>اختاري إطلالتك <span class="gradient-text">المفضلة</span></h2><p class="section-sub">قطع مختارة بعناية، لتكوني دائماً على ذوقك.</p></div><div class="muted">HUWAYDA LINE / 01</div></div>
 <div class="filters reveal" id="filters"><button class="active" data-cat="all">كل القطع</button><button data-cat="sport">Sport Wear</button><button data-cat="casual">Casual Wear</button><button data-cat="dress">Dresses</button><button data-cat="used">Pre-Loved</button></div>
+<div class="shop-tools reveal"><label class="searchbox"><input id="productSearch" type="search" placeholder="دوري على القطعة اللي ببالك..." aria-label="ابحثي عن منتج"></label><select class="sortbox" id="productSort" aria-label="ترتيب المنتجات"><option value="new">الترتيب الحالي</option><option value="low">السعر: الأقل أولاً</option><option value="high">السعر: الأعلى أولاً</option><option value="az">الاسم: أ - ي</option></select><span class="results-count" id="resultsCount"></span></div>
 <div class="products" id="products"><div class="empty">لحظات وبنجهزلك التشكيلة… ✨</div></div></section>
 <section class="promo reveal"><div class="promo-inner"><div><h2>قطعتك الجاية ممكن تكون هون 💫</h2><p>تصفحي القطع واختاري اللي بناسبك — الطلب سهل وبخطوات بسيطة.</p></div><a class="btn" href="#shop">يلا نتسوق ←</a></div></section>
 <section class="section" id="order-section"><div class="section-head reveal"><div><div class="kicker">YOUR BAG</div><h2>سلتك <span class="gradient-text">الحلوة</span></h2><p class="section-sub">راجعي اختياراتك وكمّلي طلبك بكل سهولة.</p></div></div><div class="cart-panel">
@@ -51,6 +55,7 @@
 </main>
 <footer class="footer"><strong>HUWAYDA LINE ♡</strong><p>جميع القطع المميزة بتلاقوها عنا 😍✌️</p><span>© <span id="year"></span> Huwayda Line — بكل حب</span></footer>
 <div class="companion"><div class="cat-menu" id="catMenu"><strong>اختاري القطة اللي ترافقك 🐾</strong><div class="cat-options" id="catOptions"><button data-cat="🐱" class="selected">🐱</button><button data-cat="🐈">🐈</button><button data-cat="😻">😻</button><button data-cat="🐈‍⬛">🐈‍⬛</button><button data-cat="😺">😺</button><button data-cat="😽">😽</button><button data-cat="🐾">🐾</button><button data-cat="🦊">🦊</button></div></div><div class="companion-bubble" id="catBubble">أهلاً فيكي! اختاري براحتك 💗</div><button class="companion-btn" id="companionBtn" aria-label="اختيار القطة">🐱</button></div>
+<div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-label="تفاصيل المنتج"><div class="detail-card"><button class="detail-close" id="detailClose" aria-label="إغلاق">×</button><div class="detail-image" id="detailImage"></div><div class="detail-copy"><div class="kicker">HUWAYDA LINE / PRODUCT</div><h3 id="detailName"></h3><p id="detailDescription"></p><div class="detail-meta" id="detailMeta"></div><div class="detail-price" id="detailPrice"></div><button class="btn btn-primary detail-add" id="detailAdd">أضيفي للسلة ♡</button></div></div></div>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
@@ -75,4 +80,57 @@ setCat(chosenCat);$("companionBtn").addEventListener("click",()=>$("catMenu").cl
 $("menuToggle").addEventListener("click",()=>$("navlinks").classList.toggle("open"));$("navlinks").addEventListener("click",e=>{if(e.target.tagName==="A")$("navlinks").classList.remove("open")});
 $("year").textContent=new Date().getFullYear();const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("visible");observer.unobserve(entry.target)}}),{threshold:.12});document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));drawCart();loadProducts();
 </script>
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ let selected=null;
+ function openDetails(id){
+   const p=items.find(x=>String(x.id)===String(id)); if(!p)return;
+   selected=p;
+   $('detailName').textContent=p.name||'';
+   $('detailDescription').textContent=p.description||'قطعة مميزة من Huwayda Line';
+   $('detailMeta').innerHTML='<b>رقم القطعة:</b> '+safe(p.code||'—')+'<br><b>المقاسات:</b> '+safe(p.sizes||'حسب المتوفر')+'<br><b>الألوان:</b> '+safe(p.colors||'حسب الصور');
+   $('detailPrice').textContent=Number(p.price||0).toLocaleString('en-US')+' ₪';
+   $('detailImage').innerHTML=p.image_url?'<img src="'+safe(p.image_url)+'" alt="'+safe(p.name)+'">':'<span class="photo-placeholder">🐱</span>';
+   $('detailModal').classList.add('open'); document.body.style.overflow='hidden';
+ }
+ function closeDetails(){ $('detailModal').classList.remove('open'); document.body.style.overflow=''; }
+ $('detailClose').addEventListener('click',closeDetails);
+ $('detailModal').addEventListener('click',e=>{if(e.target===$('detailModal'))closeDetails()});
+ $('detailAdd').addEventListener('click',()=>{if(selected){add(selected.id);closeDetails()}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetails()});
+ function enhanceCards(){
+   const cards=[...document.querySelectorAll('#products .product')];
+   cards.forEach(card=>{
+     if(card.querySelector('.detail-link'))return;
+     const plus=card.querySelector('.addbtn'); if(!plus)return;
+     const id=(plus.getAttribute('onclick')||'').match(/add\('([^']+)'\)/)?.[1]; if(!id)return;
+     const actions=document.createElement('div'); actions.className='product-actions';
+     const details=document.createElement('button'); details.className='detail-link'; details.type='button'; details.textContent='التفاصيل ↗'; details.addEventListener('click',()=>openDetails(id));
+     plus.parentNode.insertBefore(actions,plus); actions.append(details,plus);
+   });
+   const q=($('productSearch').value||'').trim().toLocaleLowerCase();
+   let visible=cards.filter(card=>card.textContent.toLocaleLowerCase().includes(q));
+   const sort=$('productSort').value;
+   if(sort==='low'||sort==='high'){
+     visible.sort((a,b)=>{
+       const price=el=>Number((el.querySelector('.price')?.textContent||'').replace(/[^0-9.]/g,''))||0;
+       return sort==='low'?price(a)-price(b):price(b)-price(a);
+     });
+   } else if(sort==='az') visible.sort((a,b)=>a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent,'ar'));
+   const container=$('products');
+   if(sort!=='new') visible.forEach(card=>container.appendChild(card));
+   cards.forEach(card=>card.style.display=card.textContent.toLocaleLowerCase().includes(q)?'':'none');
+   $('resultsCount').textContent=cards.filter(card=>card.style.display!=='none').length+' قطعة';
+   if(!cards.length)$('resultsCount').textContent='';
+ }
+ $('productSearch').addEventListener('input',enhanceCards);
+ $('productSort').addEventListener('change',enhanceCards);
+ const target=$('products');
+ new MutationObserver(()=>enhanceCards()).observe(target,{childList:true});
+ setTimeout(enhanceCards,500);
+})();
+</script>
+
 </body></html>
