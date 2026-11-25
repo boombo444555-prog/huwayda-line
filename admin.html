@@ -3,7 +3,7 @@
 <style>
 :root{--pink:#f4c6dc;--deep:#a33e76;--purple:#8b70a9;--ink:#493747;--soft:#fff7fb}*{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:Tahoma,Arial,sans-serif}header{padding:20px 5%;background:linear-gradient(120deg,#f8d9e8,#eee3fa);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{margin:0;color:var(--deep)}main{max-width:1000px;margin:25px auto;padding:0 16px}.panel{background:white;border:1px solid #f0dce8;border-radius:18px;padding:20px;margin:16px 0;box-shadow:0 5px 18px #8b477012}input,textarea,select{width:100%;padding:12px;border:1px solid #e7cddd;border-radius:10px;margin:6px 0 14px;font:inherit}label{font-weight:bold}.btn{border:0;background:var(--deep);color:white;padding:11px 18px;border-radius:24px;cursor:pointer;font-weight:bold}.btn.secondary{background:#8b70a9}.btn.danger{background:#a33e45}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.product{border:1px solid #f0dce8;border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center}.product img{width:76px;height:90px;object-fit:cover;border-radius:9px;background:#f8e8f0}.muted{color:#927d8d;font-size:13px}.hidden{display:none!important}#message{margin:12px 0;color:var(--deep);white-space:pre-wrap}
 </style></head><body>
-<header><div><h1>HUWAYDA LINE ♡</h1><div>لوحة إدارة المتجر</div></div><div><a href="./" style="color:#a33e76">عرض المتجر</a> <button id="logout" class="btn secondary hidden">تسجيل خروج</button></div></header>
+<header><div><h1>HUWAYDA LINE ♡</h1><div id="adminSubtitle">لوحة إدارة المتجر</div></div><div><select id="adminLanguage" aria-label="Language" style="padding:9px;border:1px solid #e7cddd;border-radius:10px;background:white;font:inherit"><option value="ar">العربية</option><option value="he">עברית</option><option value="en">English</option></select><a href="./" style="color:#a33e76">عرض المتجر</a> <button id="logout" class="btn secondary hidden">تسجيل خروج</button></div></header>
 <main>
 <section id="login" class="panel"><h2>دخول الإدارة</h2><p class="muted">هذه الصفحة مخصصة لحساب الإدارة الوحيد.</p><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="username"><label>كلمة المرور</label><input id="password" type="password" autocomplete="current-password"><button id="loginBtn" class="btn">دخول</button></section>
 <section id="dashboard" class="hidden">
@@ -27,4 +27,26 @@ $('productForm').onsubmit=async e=>{e.preventDefault();if(!client)return;msg('ج
 const item={code:$('code').value.trim(),name:$('name').value.trim(),price:Number($('price').value),category:$('category').value,sizes:$('sizes').value.trim(),colors:$('colors').value.trim(),description:$('description').value.trim(),active:$('active').checked,image_url:imageUrl,updated_at:new Date().toISOString()};
 const id=$('productId').value;const result=id?await client.from('products').update(item).eq('id',id):await client.from('products').insert(item);if(result.error){msg('تعذر حفظ المنتج: '+result.error.message);return}msg('تم حفظ المنتج بنجاح.');$('productForm').reset();$('productId').value='';$('currentImage').textContent='';$('formTitle').textContent='إضافة منتج جديد';refresh()};
 (async()=>{if(!ready){$('login').insertAdjacentHTML('beforeend','<p class="muted">الإعداد التقني لم يكتمل بعد. بعد ربط قاعدة البيانات سنفعّل الدخول.</p>');return}const {data}=await client.auth.getSession();if(data.session){showDash(true);refresh()}})();
+</script>
+<script>
+(function(){
+const dict={
+en:{
+"لوحة إدارة المتجر":"Store Admin","عرض المتجر":"View Store","تسجيل خروج":"Log out","دخول الإدارة":"Admin Login","هذه الصفحة مخصصة لحساب الإدارة الوحيد.":"This page is for the single admin account.",
+"البريد الإلكتروني":"Email address","كلمة المرور":"Password","دخول":"Sign in","إضافة منتج جديد":"Add New Product","رقم القطعة":"Item code","اسم القطعة":"Product name","السعر (₪)":"Price (₪)","التصنيف":"Category","المقاسات":"Sizes","الألوان":"Colors","الوصف":"Description","صورة المنتج":"Product image","عرض المنتج في المتجر":"Show product in store","حفظ المنتج":"Save product","تفريغ الحقول":"Clear form","المنتجات الحالية":"Current products","Sport Wear":"Sport Wear","Casual Wear":"Casual Wear","Dresses":"Dresses","Pre-Loved":"Pre-Loved","Swimwear / ملابس سباحة":"Swimwear","Lingerie / ملابس داخلية":"Lingerie"
+},
+he:{
+"لوحة إدارة المتجر":"ניהול החנות","عرض المتجر":"צפייה בחנות","تسجيل خروج":"התנתקות","دخول الإدارة":"כניסת מנהלת","هذه الصفحة مخصصة لحساب الإدارة الوحيد.":"עמוד זה מיועד לחשבון מנהלת יחיד.",
+"البريد الإلكتروني":"כתובת אימייל","كلمة المرور":"סיסמה","دخول":"כניסה","إضافة منتج جديد":"הוספת מוצר חדש","رقم القطعة":"מספר פריט","اسم القطعة":"שם המוצר","السعر (₪)":"מחיר (₪)","التصنيف":"קטגוריה","المقاسات":"מידות","الألوان":"צבעים","الوصف":"תיאור","صورة المنتج":"תמונת מוצר","عرض المنتج في المتجر":"הצגת המוצר בחנות","حفظ المنتج":"שמירת מוצר","تفريغ الحقول":"ניקוי הטופס","المنتجات الحالية":"המוצרים הקיימים","Sport Wear":"בגדי ספורט","Casual Wear":"בגדי יום-יום","Dresses":"שמלות","Pre-Loved":"יד שנייה","Swimwear / ملابس سباحة":"בגדי ים","Lingerie / ملابس داخلية":"הלבשה תחתונה"
+}};
+const original=new WeakMap();
+function apply(lang){
+document.documentElement.lang=lang;document.documentElement.dir=lang==="en"?"ltr":"rtl";
+const walk=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+let n;while(n=walk.nextNode()){if(!original.has(n))original.set(n,n.nodeValue);const raw=original.get(n),key=raw.trim(),v=dict[lang]?.[key];if(v){const next=raw.replace(key,v);if(n.nodeValue!==next)n.nodeValue=next}}
+document.title=lang==="ar"?"إدارة Huwayda Line":lang==="he"?"ניהול Huwayda Line":"Huwayda Line Admin";
+}
+const select=document.getElementById("adminLanguage");const saved=localStorage.getItem("huwayda-language")||"ar";select.value=saved;select.addEventListener("change",()=>{localStorage.setItem("huwayda-language",select.value);apply(select.value)});
+const observer=new MutationObserver(()=>apply(select.value));observer.observe(document.body,{childList:true,subtree:true});apply(saved);
+})();
 </script></body></html>
