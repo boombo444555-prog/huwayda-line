@@ -3,7 +3,11 @@ create table if not exists public.products (
   id uuid primary key default gen_random_uuid(),
   code text not null unique,
   name text not null,
+  name_he text default '',
+  name_en text default '',
   description text default '',
+  description_he text default '',
+  description_en text default '',
   category text not null default 'sport',
   price numeric(10,2) not null default 0,
   sizes text default '',
@@ -12,7 +16,11 @@ create table if not exists public.products (
   active boolean not null default true,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
-);
+ );
+alter table public.products add column if not exists name_he text default '';
+alter table public.products add column if not exists name_en text default '';
+alter table public.products add column if not exists description_he text default '';
+alter table public.products add column if not exists description_en text default '';
 alter table public.products enable row level security;
 drop policy if exists "Public can view active products" on public.products;
 create policy "Public can view active products" on public.products for select using (active = true);
