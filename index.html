@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8d8e8">
+<title>Huwayda Line | هويّدة لاين</title>
+<style>
+:root{--pink:#f4c6dc;--deep:#a33e76;--purple:#8b70a9;--ink:#493747;--soft:#fff7fb}
+*{box-sizing:border-box}body{margin:0;background:var(--soft);color:var(--ink);font-family:Tahoma,Arial,sans-serif}header{padding:22px 6%;background:linear-gradient(120deg,#f8d9e8,#eee3fa);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}h1{margin:0;color:var(--deep);font-size:clamp(25px,4vw,38px)}header p{margin:7px 0 0}.social a,.btn{display:inline-block;text-decoration:none;background:var(--deep);color:white;padding:11px 16px;border-radius:24px;margin:4px;border:0;cursor:pointer;font-weight:bold}.hero{text-align:center;padding:52px 18px 38px;background:radial-gradient(circle at 50% 0,#f8d9e8,transparent 65%)}.cat{font-size:64px}.hero h2{font-size:clamp(25px,5vw,42px);margin:8px}.hero p{font-size:17px}.wrap{max-width:1100px;margin:auto;padding:25px 18px}.filters{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.filters button{border:1px solid #e4bfd4;background:white;border-radius:20px;padding:9px 14px;color:var(--deep);cursor:pointer}.filters button.active{background:var(--deep);color:white}.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:17px}.product{background:white;border:1px solid #f0dce8;border-radius:18px;overflow:hidden;box-shadow:0 5px 18px #8b477012}.photo{height:180px;background:linear-gradient(135deg,#f7dce9,#eee5f7);display:grid;place-items:center;font-size:54px}.info{padding:15px}.info h3{margin:4px 0}.price{font-weight:bold;color:var(--deep);font-size:19px}.muted{color:#927d8d;font-size:13px}.panel{background:white;border:1px solid #f0dce8;border-radius:18px;padding:20px;margin:22px 0}input,textarea{width:100%;padding:12px;border:1px solid #e7cddd;border-radius:10px;margin:6px 0 12px;font:inherit}label{font-weight:bold}.cartline{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #f1e4ec;padding:9px 0}.footer{text-align:center;padding:30px;background:#f4e6ef}.smallcat{position:fixed;bottom:14px;left:14px;background:white;border-radius:50%;padding:10px;box-shadow:0 3px 14px #0002;font-size:27px}
+</style>
+</head>
+<body>
+<header><div><h1>HUWAYDA LINE ♡</h1><p>اختاري إطلالتك المفضلة بكل حب</p></div><nav class="social"><a href="https://www.instagram.com/huwayda_line/" target="_blank" rel="noopener">Instagram</a><a href="https://wa.me/972546082009" target="_blank" rel="noopener">اطلبي عبر واتساب</a></nav></header>
+<section class="hero"><div class="cat">🐱</div><h2>كل القطع المميزة بتلاقوها عنا 😍✌️</h2><p>ستايلك، لمستك، واختيارك المميز</p><a class="btn" href="#shop">تصفحي القطع</a></section>
+<main class="wrap"><section id="shop"><h2>تسوقي حسب ذوقك</h2><div class="filters" id="filters"><button class="active" data-cat="all">الكل</button><button data-cat="sport">Sport Wear</button><button data-cat="casual">Casual Wear</button><button data-cat="dress">Dresses</button><button data-cat="used">Pre-Loved</button></div><div class="products" id="products"></div></section>
+<section class="panel"><h2>🛍️ سلة مشترياتك</h2><div id="cart">السلة فارغة حالياً.</div><p id="total"></p><h3>إتمام الطلب</h3><form id="order"><label>الاسم الكامل</label><input name="name" required placeholder="الاسم الأول والثاني"><label>رقم الهاتف</label><input name="phone" required inputmode="tel" placeholder="05xxxxxxxx"><label>رقم بديل (اختياري)</label><input name="alt" inputmode="tel"><label>عنوان التوصيل</label><textarea name="address" required rows="2"></textarea><button class="btn">إرسال الطلب عبر واتساب</button></form></section>
+<section class="panel"><h2>💗 تابعينا</h2><p>سناب: d.821</p><p>إنستغرام: <a href="https://www.instagram.com/huwayda_line/">@huwayda_line</a></p><p>للطلب والاستفسار: 0546082009</p></section></main>
+<footer class="footer">Huwayda Line © <span id="year"></span> — بكل حب ♡</footer><div class="smallcat">🐈</div>
+<script>
+const items=[
+{id:"HL-001",name:"طقم رياضي ناعم",cat:"sport",price:89,size:"S / M / L",emoji:"🎽"},
+{id:"HL-002",name:"ليغنغ رياضي",cat:"sport",price:55,size:"S / M / L",emoji:"🩷"},
+{id:"HL-003",name:"طقم كاجوال",cat:"casual",price:75,size:"M / L / XL",emoji:"👚"},
+{id:"HL-004",name:"فستان أنيق",cat:"dress",price:110,size:"S / M / L",emoji:"👗"},
+{id:"HL-005",name:"قطعة مستعملة بحالة ممتازة",cat:"used",price:35,size:"حسب القطعة",emoji:"🛍️"}];
+let cart=[];
+const names={sport:"Sport Wear",casual:"Casual Wear",dress:"Dresses",used:"Pre-Loved"};
+function render(cat="all"){document.getElementById("products").innerHTML=items.filter(x=>cat==="all"||x.cat===cat).map(x=>`<article class="product"><div class="photo">${x.emoji}</div><div class="info"><div class="muted">${x.id} · ${names[x.cat]}</div><h3>${x.name}</h3><p class="muted">المقاسات: ${x.size}</p><div class="price">${x.price} ₪</div><button class="btn" onclick="add('${x.id}')">أضيفي للسلة</button></div></article>`).join("")}
+function add(id){cart.push(items.find(x=>x.id===id));drawCart()}
+function drawCart(){let el=document.getElementById("cart");el.innerHTML=cart.length?cart.map((x,i)=>`<div class="cartline"><span>${x.name} — ${x.price} ₪</span><button onclick="removeItem(${i})">حذف</button></div>`).join(""):"السلة فارغة حالياً.";document.getElementById("total").textContent=cart.length?"المجموع: "+cart.reduce((a,x)=>a+x.price,0)+" ₪":""}
+function removeItem(i){cart.splice(i,1);drawCart()}
+document.getElementById("filters").addEventListener("click",e=>{if(e.target.dataset.cat){document.querySelectorAll(".filters button").forEach(b=>b.classList.toggle("active",b===e.target));render(e.target.dataset.cat)}});
+document.getElementById("order").addEventListener("submit",e=>{e.preventDefault();if(!cart.length){alert("أضيفي قطعة للسلة أولاً");return}const f=new FormData(e.target),lines=cart.map(x=>x.id+" "+x.name+" — "+x.price+"₪").join("%0A"),msg="طلب جديد من Huwayda Line%0Aالاسم: "+f.get("name")+"%0Aالهاتف: "+f.get("phone")+"%0Aرقم بديل: "+(f.get("alt")||"—")+"%0Aالعنوان: "+f.get("address")+"%0Aالقطع:%0A"+lines+"%0Aالمجموع: "+cart.reduce((a,x)=>a+x.price,0)+"₪";window.open("https://wa.me/972546082009?text="+encodeURIComponent(msg)," _blank");});
+document.getElementById("year").textContent=new Date().getFullYear();render();
+</script>
+</body></html>
