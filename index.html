@@ -17,21 +17,21 @@
 <section class="panel"><h2>🛍️ سلة مشترياتك</h2><div id="cart">السلة فارغة حالياً.</div><p id="total"></p><h3>إتمام الطلب</h3><form id="order"><label>الاسم الكامل</label><input name="name" required placeholder="الاسم الأول والثاني"><label>رقم الهاتف</label><input name="phone" required inputmode="tel" placeholder="05xxxxxxxx"><label>رقم بديل (اختياري)</label><input name="alt" inputmode="tel"><label>عنوان التوصيل</label><textarea name="address" required rows="2"></textarea><button class="btn">إرسال الطلب عبر واتساب</button></form></section>
 <section class="panel"><h2>💗 تابعينا</h2><p>سناب: d.821</p><p>إنستغرام: <a href="https://www.instagram.com/huwayda_line/">@huwayda_line</a></p><p>للطلب والاستفسار: 0546082009</p></section></main>
 <footer class="footer">Huwayda Line © <span id="year"></span> — بكل حب ♡</footer><div class="smallcat">🐈</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./config.js"></script>
 <script>
-const items=[
-{id:"HL-001",name:"طقم رياضي ناعم",cat:"sport",price:89,size:"S / M / L",emoji:"🎽"},
-{id:"HL-002",name:"ليغنغ رياضي",cat:"sport",price:55,size:"S / M / L",emoji:"🩷"},
-{id:"HL-003",name:"طقم كاجوال",cat:"casual",price:75,size:"M / L / XL",emoji:"👚"},
-{id:"HL-004",name:"فستان أنيق",cat:"dress",price:110,size:"S / M / L",emoji:"👗"},
-{id:"HL-005",name:"قطعة مستعملة بحالة ممتازة",cat:"used",price:35,size:"حسب القطعة",emoji:"🛍️"}];
-let cart=[];
+let items=[],cart=[],activeCategory="all";
 const names={sport:"Sport Wear",casual:"Casual Wear",dress:"Dresses",used:"Pre-Loved"};
-function render(cat="all"){document.getElementById("products").innerHTML=items.filter(x=>cat==="all"||x.cat===cat).map(x=>`<article class="product"><div class="photo">${x.emoji}</div><div class="info"><div class="muted">${x.id} · ${names[x.cat]}</div><h3>${x.name}</h3><p class="muted">المقاسات: ${x.size}</p><div class="price">${x.price} ₪</div><button class="btn" onclick="add('${x.id}')">أضيفي للسلة</button></div></article>`).join("")}
-function add(id){cart.push(items.find(x=>x.id===id));drawCart()}
-function drawCart(){let el=document.getElementById("cart");el.innerHTML=cart.length?cart.map((x,i)=>`<div class="cartline"><span>${x.name} — ${x.price} ₪</span><button onclick="removeItem(${i})">حذف</button></div>`).join(""):"السلة فارغة حالياً.";document.getElementById("total").textContent=cart.length?"المجموع: "+cart.reduce((a,x)=>a+x.price,0)+" ₪":""}
+const cfg=window.HUWAYDA_CONFIG||{};
+const db=(cfg.supabaseUrl&&cfg.supabaseAnonKey&&!cfg.supabaseUrl.includes("YOUR_"))?supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey):null;
+function render(cat=activeCategory){activeCategory=cat;const shown=items.filter(x=>cat==="all"||x.category===cat);document.getElementById("products").innerHTML=shown.map(x=>`<article class="product"><div class="photo">${x.image_url?'<img src="'+x.image_url+'" alt="'+safe(x.name)+'" style="width:100%;height:180px;object-fit:cover">':"🐱"}</div><div class="info"><div class="muted">${safe(x.code)} · ${names[x.category]||x.category}</div><h3>${safe(x.name)}</h3><p class="muted">${safe(x.description||"")}</p><p class="muted">المقاسات: ${safe(x.sizes||"غير محدد")}</p><div class="price">${Number(x.price).toLocaleString("en-US")} ₪</div><button class="btn" onclick="add('${x.id}')">أضيفي للسلة</button></div></article>`).join("")||'<p>قريباً رح نضيف قطع جديدة 💗</p>'}
+function safe(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function loadProducts(){if(!db){document.getElementById("products").innerHTML='<p>المتجر قيد التجهيز، قريباً بنضيف القطع 💗</p>';return}const {data,error}=await db.from("products").select("*").eq("active",true).order("created_at",{ascending:false});if(error){document.getElementById("products").textContent="تعذر تحميل المنتجات حالياً.";return}items=data||[];render()}
+function add(id){const p=items.find(x=>x.id===id);if(p){cart.push(p);drawCart()}}
+function drawCart(){let el=document.getElementById("cart");el.innerHTML=cart.length?cart.map((x,i)=>`<div class="cartline"><span>${safe(x.name)} — ${x.price} ₪</span><button onclick="removeItem(${i})">حذف</button></div>`).join(""):"السلة فارغة حالياً.";document.getElementById("total").textContent=cart.length?"المجموع: "+cart.reduce((a,x)=>a+Number(x.price),0)+" ₪":""}
 function removeItem(i){cart.splice(i,1);drawCart()}
 document.getElementById("filters").addEventListener("click",e=>{if(e.target.dataset.cat){document.querySelectorAll(".filters button").forEach(b=>b.classList.toggle("active",b===e.target));render(e.target.dataset.cat)}});
-document.getElementById("order").addEventListener("submit",e=>{e.preventDefault();if(!cart.length){alert("أضيفي قطعة للسلة أولاً");return}const f=new FormData(e.target),lines=cart.map(x=>x.id+" "+x.name+" — "+x.price+"₪").join("%0A"),msg="طلب جديد من Huwayda Line%0Aالاسم: "+f.get("name")+"%0Aالهاتف: "+f.get("phone")+"%0Aرقم بديل: "+(f.get("alt")||"—")+"%0Aالعنوان: "+f.get("address")+"%0Aالقطع:%0A"+lines+"%0Aالمجموع: "+cart.reduce((a,x)=>a+x.price,0)+"₪";window.open("https://wa.me/972546082009?text="+encodeURIComponent(msg)," _blank");});
-document.getElementById("year").textContent=new Date().getFullYear();render();
+document.getElementById("order").addEventListener("submit",e=>{e.preventDefault();if(!cart.length){alert("أضيفي قطعة للسلة أولاً");return}const f=new FormData(e.target),lines=cart.map(x=>x.code+" "+x.name+" — "+x.price+"₪").join("\n"),msg="طلب جديد من Huwayda Line\nالاسم: "+f.get("name")+"\nالهاتف: "+f.get("phone")+"\nرقم بديل: "+(f.get("alt")||"—")+"\nالعنوان: "+f.get("address")+"\nالقطع:\n"+lines+"\nالمجموع: "+cart.reduce((a,x)=>a+Number(x.price),0)+"₪";window.open("https://wa.me/972546082009?text="+encodeURIComponent(msg),"_blank")});
+document.getElementById("year").textContent=new Date().getFullYear();drawCart();loadProducts();
 </script>
 </body></html>
