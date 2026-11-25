@@ -27,6 +27,24 @@
 
 .shop-tools{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:-7px 0 22px;flex-wrap:wrap}.searchbox{flex:1;min-width:210px}.searchbox input,.sortbox{height:44px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:0 15px;outline:none;font-size:12px}.searchbox input{width:100%}.searchbox input:focus,.sortbox:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}.sortbox{min-width:155px}.results-count{font-size:11px;color:var(--muted);white-space:nowrap}.product-actions{display:flex;align-items:center;gap:7px}.detail-link{border:1px solid var(--line);background:transparent;color:var(--accent);border-radius:10px;padding:7px 10px;font-size:10px;font-weight:800}.detail-modal{position:fixed;inset:0;z-index:60;background:rgba(18,12,25,.68);backdrop-filter:blur(9px);display:none;place-items:center;padding:18px}.detail-modal.open{display:grid}.detail-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:var(--surface-solid);border:1px solid var(--line);border-radius:25px;box-shadow:0 30px 100px rgba(0,0,0,.3);display:grid;grid-template-columns:1fr 1fr;position:relative}.detail-image{min-height:390px;background:linear-gradient(145deg,var(--hero1),var(--hero2));display:grid;place-items:center;overflow:hidden;border-radius:0 25px 25px 0}.detail-image img{width:100%;height:100%;max-height:500px;object-fit:cover}.detail-copy{padding:34px 27px}.detail-copy h3{font-size:25px;margin:8px 0}.detail-copy p{font-size:13px;line-height:2;color:var(--muted)}.detail-meta{padding:12px 0;border-block:1px solid var(--line);font-size:12px;line-height:2}.detail-close{position:absolute;top:12px;left:12px;width:37px;height:37px;border:0;border-radius:12px;background:var(--surface-solid);color:var(--ink);font-size:20px;z-index:2}.detail-price{font-size:25px;color:var(--accent);font-weight:900;margin:18px 0}.detail-add{width:100%}.shop-empty{grid-column:1/-1;text-align:center;padding:55px 20px;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:20px}
 @media(max-width:700px){.shop-tools{align-items:stretch}.searchbox{min-width:100%}.sortbox{flex:1}.detail-card{grid-template-columns:1fr}.detail-image{min-height:240px;max-height:290px;border-radius:0}.detail-copy{padding:22px}.detail-copy h3{font-size:21px}}
+
+/* Animated companion cat */
+.companion{left:18px;right:auto;transition:left .72s cubic-bezier(.2,.8,.2,1)}
+.companion-btn{position:relative;isolation:isolate;will-change:transform}
+.companion-btn.hopping{animation:catHop .72s cubic-bezier(.3,.7,.3,1)}
+.companion-btn.grooming:after{content:"✦";position:absolute;top:-9px;right:-8px;color:#f2b84b;font-size:20px;animation:sparkle 1s ease-in-out infinite}
+.companion-btn.stretching{animation:catStretch 1.7s ease-in-out infinite}
+.companion-btn.sleeping{animation:catSleep 3s ease-in-out infinite}
+.companion-btn.sleeping:after{content:"Z z";position:absolute;right:-13px;top:-16px;color:var(--accent);font:bold 13px Arial;animation:zzz 2s ease-in-out infinite}
+.companion-btn.grooming{animation:catGroom .8s ease-in-out infinite}
+.companion-bubble{transition:opacity .25s}
+@keyframes catHop{0%{transform:translateY(0) rotate(0)}25%{transform:translateY(-27px) rotate(-12deg)}52%{transform:translateY(-34px) rotate(9deg)}78%{transform:translateY(-8px) rotate(-5deg)}100%{transform:translateY(0) rotate(0)}}
+@keyframes catGroom{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-9deg) scale(.96)}55%{transform:rotate(8deg) scale(1.03)}}
+@keyframes catStretch{0%,100%{transform:scaleY(1) translateY(0)}45%{transform:scaleY(.82) scaleX(1.13) translateY(5px)}70%{transform:scaleY(1.1) translateY(-3px)}}
+@keyframes catSleep{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(-8deg) translateY(4px) scale(.96)}}
+@keyframes sparkle{50%{transform:rotate(35deg) scale(1.4);opacity:.45}}
+@keyframes zzz{0%{transform:translate(0,5px);opacity:0}35%{opacity:1}100%{transform:translate(9px,-17px);opacity:0}}
+@media(prefers-reduced-motion:reduce){.companion-btn.hopping,.companion-btn.grooming,.companion-btn.stretching,.companion-btn.sleeping{animation:none!important}}
 </style>
 </head>
 <body>
@@ -43,7 +61,7 @@
 <div class="marquee"><div class="marquee-track"><span>HUWAYDA LINE <b>✦</b> NEW LOOKS <b>✦</b> YOUR STYLE <b>✦</b> MADE WITH LOVE <b>✦</b> HUWAYDA LINE <b>✦</b> NEW LOOKS <b>✦</b> YOUR STYLE <b>✦</b> MADE WITH LOVE <b>✦</b></span></div></div>
 <main>
 <section class="section" id="shop"><div class="section-head reveal"><div><div class="kicker">THE COLLECTION</div><h2>اختاري إطلالتك <span class="gradient-text">المفضلة</span></h2><p class="section-sub">قطع مختارة بعناية، لتكوني دائماً على ذوقك.</p></div><div class="muted">HUWAYDA LINE / 01</div></div>
-<div class="filters reveal" id="filters"><button class="active" data-cat="all">كل القطع</button><button data-cat="sport">Sport Wear</button><button data-cat="casual">Casual Wear</button><button data-cat="dress">Dresses</button><button data-cat="used">Pre-Loved</button></div>
+<div class="filters reveal" id="filters"><button class="active" data-cat="all">كل القطع</button><button data-cat="sport">Sport Wear</button><button data-cat="casual">Casual Wear</button><button data-cat="dress">Dresses</button><button data-cat="used">Pre-Loved</button><button data-cat="swim">Swimwear</button><button data-cat="lingerie">Lingerie</button></div>
 <div class="shop-tools reveal"><label class="searchbox"><input id="productSearch" type="search" placeholder="دوري على القطعة اللي ببالك..." aria-label="ابحثي عن منتج"></label><select class="sortbox" id="productSort" aria-label="ترتيب المنتجات"><option value="new">الترتيب الحالي</option><option value="low">السعر: الأقل أولاً</option><option value="high">السعر: الأعلى أولاً</option><option value="az">الاسم: أ - ي</option></select><span class="results-count" id="resultsCount"></span></div>
 <div class="products" id="products"><div class="empty">لحظات وبنجهزلك التشكيلة… ✨</div></div></section>
 <section class="promo reveal"><div class="promo-inner"><div><h2>قطعتك الجاية ممكن تكون هون 💫</h2><p>تصفحي القطع واختاري اللي بناسبك — الطلب سهل وبخطوات بسيطة.</p></div><a class="btn" href="#shop">يلا نتسوق ←</a></div></section>
@@ -61,7 +79,7 @@
 <script src="./config.js"></script>
 <script>
 let items=[],cart=[],activeCategory="all";
-const names={sport:"Sport Wear",casual:"Casual Wear",dress:"Dresses",used:"Pre-Loved"};
+const names={sport:"Sport Wear",casual:"Casual Wear",dress:"Dresses",used:"Pre-Loved",swim:"Swimwear",lingerie:"Lingerie"};
 const cfg=window.HUWAYDA_CONFIG||{};
 const db=(cfg.supabaseUrl&&cfg.supabaseAnonKey&&!cfg.supabaseUrl.includes("YOUR_"))?supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey):null;
 const $=id=>document.getElementById(id);
@@ -133,4 +151,48 @@ $("year").textContent=new Date().getFullYear();const observer=new IntersectionOb
 })();
 </script>
 
+
+<script>
+(function(){
+ const mascot=document.getElementById('companionBtn');
+ const companion=document.querySelector('.companion');
+ const bubble=document.getElementById('catBubble');
+ if(!mascot||!companion)return;
+ let lastY=window.scrollY,spot=0,idleTimer=null,moodTimer=null,hopTimer=null,moodCycle=0;
+ const spots=[16,30,47,65,81];
+ function clearMood(){mascot.classList.remove('grooming','stretching','sleeping')}
+ function stopIdle(){clearTimeout(idleTimer);clearTimeout(moodTimer);clearMood();moodCycle=0}
+ function startIdle(){
+   clearMood();
+   const moods=['grooming','stretching','sleeping'];
+   const phrases=['القطة بتنضّف حالها شوي 🐾','تمطّت وارتاحت 😽','شكلها غفت من الراحة… Zzz'];
+   function next(){
+     clearMood();
+     const mood=moods[moodCycle%moods.length];
+     mascot.classList.add(mood);
+     if(bubble)bubble.textContent=phrases[moodCycle%moods.length];
+     const duration=mood==='sleeping'?5200:3000;
+     moodCycle++;
+     moodTimer=setTimeout(next,duration);
+   }
+   next();
+ }
+ function resetIdle(){clearTimeout(idleTimer);clearTimeout(moodTimer);clearMood();idleTimer=setTimeout(startIdle,2600)}
+ function moveCat(y){
+   const delta=y-lastY;
+   if(Math.abs(delta)<65)return;
+   spot=(spot+(delta>0?1:spots.length-1))%spots.length;
+   companion.style.left='clamp(8px, '+spots[spot]+'vw, calc(100vw - 82px))';
+   mascot.classList.remove('hopping');void mascot.offsetWidth;mascot.classList.add('hopping');
+   clearTimeout(hopTimer);hopTimer=setTimeout(()=>mascot.classList.remove('hopping'),850);
+   if(bubble)bubble.textContent=delta>0?'لحقتك! وين رايحين؟ 🐾':'رجعنا لفوق! 😺';
+   resetIdle();
+ }
+ window.addEventListener('scroll',()=>{
+   const y=window.scrollY;moveCat(y);lastY=y;
+ },{passive:true});
+ window.addEventListener('resize',()=>{companion.style.left='clamp(8px, '+spots[spot]+'vw, calc(100vw - 82px))'});
+ resetIdle();
+})();
+</script>
 </body></html>
